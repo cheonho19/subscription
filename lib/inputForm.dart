@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'main.dart';
+import 'analysis.dart';
 
 class InputForm extends StatefulWidget {
+
+  InputForm(this.document);
+  final DocumentSnapshot document;
   @override
   _MyInputFormState createState() => _MyInputFormState();
 }
@@ -31,10 +35,20 @@ class _MyInputFormState extends State<InputForm> {
   Widget build(BuildContext context) {
     DocumentReference _mainReference;
     _mainReference = Firestore.instance.collection('subscription').document();
-
+    bool deleteFlg = false;
+    if(widget.document != null) { //データベース上のデータに値が入っていて
+      if(_data.name == null && _data.payment == null){ //現在の_dataの中がからだったら
+        _data.name = widget.document['name'];
+        _data.payment = widget.document['payment'].toString();
+        _data.date = widget.document['date'].toDate();
+      }
+      _mainReference = Firestore.instance.collection('subscription').
+      document(widget.document.documentID);
+      deleteFlg = true;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Subscription'),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.save),
@@ -55,15 +69,16 @@ class _MyInputFormState extends State<InputForm> {
           ),
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {
+            onPressed: !deleteFlg ? null : () {
               print("削除ボタンを押しました");
+              _mainReference.delete();
+              Navigator.pop(context);
             },
           ),
         ],
       ),
       body: SafeArea(
-        child:
-        Form(
+        child: Form(
           key: _formKey,
           child: ListView(
             padding: const EdgeInsets.all(20.0),

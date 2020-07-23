@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
+import 'analysis.dart';
+import 'inputForm.dart';
+import 'root.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,7 +14,7 @@ class _MyHome extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("My Subscription"),
+          title: const Text("Home"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -35,12 +38,11 @@ class _MyHome extends State<Home> {
                 context,
                 MaterialPageRoute(
                     settings: const RouteSettings(name: "/new"),
-                    builder: (BuildContext context) => InputForm()
+                    builder: (BuildContext context) => InputForm(null)
                 ),
               );
             }
         ),
-        bottomNavigationBar: Footer()
     );
   }
 
@@ -52,8 +54,27 @@ class _MyHome extends State<Home> {
             ListTile(
               leading: const Icon(Icons.android),
               title: Text(document['name']),
-              subtitle: Text('期限：' + document['date'].toString().substring(0,10)
-                  + "\n金額："+ document['charge'].toString()),
+              subtitle: Text('支払日：' + document['date'].toDate().toString().substring(0,10)
+                  + "\n料金："+ document['payment'].toString()),
+            ),
+            ButtonTheme.bar(
+                child: ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                        child: const Text("編集"),
+                        onPressed: () {
+                          print("編集ボタンを押しました");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              settings: const RouteSettings(name: "/edit"),
+                              builder: (BuildContext context) => InputForm(document)
+                            ),
+                          );
+                        }
+                        ),
+                  ],
+                )
             ),
           ]
       ),
