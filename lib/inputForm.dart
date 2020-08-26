@@ -5,9 +5,8 @@ import 'main.dart';
 import 'analysis.dart';
 
 class InputForm extends StatefulWidget {
-
-  InputForm(this.document);
   final DocumentSnapshot document;
+  InputForm(this.document);
   @override
   _MyInputFormState createState() => _MyInputFormState();
 }
@@ -21,7 +20,6 @@ class _FormData {
 class _MyInputFormState extends State<InputForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _FormData _data = _FormData();
-
   Future <DateTime> _selectTime(BuildContext context) {
     return showDatePicker(
         context: context,

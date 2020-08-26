@@ -29,11 +29,10 @@ class _MyFooter extends State<Footer> {
     );
   }
 }
+*/
 
- */
 class RootWidget extends StatefulWidget {
   RootWidget({Key key}) : super(key: key);
-
   @override
   _RootWidgetState createState() => _RootWidgetState();
 }
@@ -41,6 +40,7 @@ class RootWidget extends StatefulWidget {
 class _RootWidgetState extends State<RootWidget> {
   int _selectedIndex = 0;
   final _bottomNavigationBarItems = <BottomNavigationBarItem>[];
+  DocumentSnapshot document;
 
   static const _footerIcons = [
     Icons.home,
@@ -65,6 +65,7 @@ class _RootWidgetState extends State<RootWidget> {
       _bottomNavigationBarItems.add(_UpdateDeactiveState(i));
     }
   }
+
   BottomNavigationBarItem _UpdateActiveState(int index) {
     return BottomNavigationBarItem(
         icon: Icon(
